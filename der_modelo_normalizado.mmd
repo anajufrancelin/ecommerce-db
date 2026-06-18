@@ -1,0 +1,127 @@
+erDiagram
+    cliente ||--o{ endereco : "cliente_id"
+    cliente ||--o{ pedido : "cliente_id"
+    cliente ||--o{ avaliacao : "cliente_id"
+    status_cliente ||--o{ cliente : "status_id"
+
+    pedido ||--o{ item_pedido : "pedido_id"
+    pedido ||--o{ pagamento : "pedido_id"
+    pedido }o--o{ pedido_cupom : "pedido_id"
+    pedido }o--|| endereco : "endereco_entrega_id"
+    status_pedido ||--o{ pedido : "status_id"
+
+    produto ||--o{ item_pedido : "produto_id"
+    produto ||--o{ avaliacao : "produto_id"
+    produto }o--o{ estoque : "produto_id"
+    categoria ||--o{ produto : "categoria_id"
+    fornecedor ||--o{ produto : "fornecedor_id"
+    categoria ||--o{ categoria : "categoria_pai_id"
+
+    deposito }o--o{ estoque : "deposito_id"
+    forma_pagamento ||--o{ pagamento : "forma_id"
+    cupom_desconto }o--o{ pedido_cupom : "cupom_id"
+
+    cliente {
+        int id PK
+        varchar nome
+        varchar email
+        varchar cpf
+        varchar telefone
+        timestamp data_cadastro
+        int status_id FK
+    }
+    status_cliente {
+        int id PK
+        varchar descricao
+    }
+    endereco {
+        int id PK
+        int cliente_id FK
+        varchar logradouro
+        varchar cidade
+        char uf
+        varchar cep
+        boolean principal
+    }
+    categoria {
+        int id PK
+        varchar nome
+        int categoria_pai_id FK
+    }
+    fornecedor {
+        int id PK
+        varchar razao_social
+        varchar cnpj
+    }
+    produto {
+        int id PK
+        varchar sku
+        varchar nome
+        int categoria_id FK
+        int fornecedor_id FK
+        numeric preco_custo
+        numeric preco_venda
+        boolean ativo
+    }
+    deposito {
+        int id PK
+        varchar nome
+        varchar cidade
+        char uf
+    }
+    estoque {
+        int produto_id PK
+        int deposito_id PK
+        int qtd_disponivel
+        int qtd_reservada
+    }
+    forma_pagamento {
+        int id PK
+        varchar descricao
+    }
+    status_pedido {
+        int id PK
+        varchar descricao
+    }
+    pedido {
+        int id PK
+        int cliente_id FK
+        int endereco_entrega_id FK
+        int status_id FK
+        timestamp data_pedido
+        numeric valor_frete
+        numeric valor_desconto
+    }
+    item_pedido {
+        int id PK
+        int pedido_id FK
+        int produto_id FK
+        int quantidade
+        numeric preco_unitario_snapshot
+    }
+    pagamento {
+        int id PK
+        int pedido_id FK
+        int forma_id FK
+        numeric valor
+        boolean aprovado
+        int parcelas
+    }
+    avaliacao {
+        int id PK
+        int produto_id FK
+        int cliente_id FK
+        smallint nota
+        text comentario
+    }
+    cupom_desconto {
+        int id PK
+        varchar codigo
+        numeric percentual
+        numeric valor_fixo
+        boolean ativo
+    }
+    pedido_cupom {
+        int pedido_id PK
+        int cupom_id PK
+    }
