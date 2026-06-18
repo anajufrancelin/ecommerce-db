@@ -1,0 +1,956 @@
+{
+  "avaliacao_produto": {
+    "colunas": [
+      {
+        "nome": "id_avaliacao",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('avaliacao_produto_id_avaliacao_seq'::regclass)"
+      },
+      {
+        "nome": "produto_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cliente_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "nota",
+        "tipo": "smallint(16,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "comentario",
+        "tipo": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "dt_avaliacao",
+        "tipo": "timestamp without time zone",
+        "nullable": true,
+        "default": "now()"
+      }
+    ],
+    "chave_primaria": [
+      "id_avaliacao"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "produto_id",
+        "tabela_referenciada": "produto",
+        "coluna_referenciada": "id_produto",
+        "constraint": "avaliacao_produto_produto_id_fkey"
+      },
+      {
+        "coluna": "cliente_id",
+        "tabela_referenciada": "tb_cliente",
+        "coluna_referenciada": "id_cliente",
+        "constraint": "avaliacao_produto_cliente_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "(((nota >= 1) AND (nota <= 5)))",
+      "id_avaliacao IS NOT NULL",
+      "produto_id IS NOT NULL",
+      "cliente_id IS NOT NULL",
+      "nota IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "avaliacao_produto_pkey",
+        "definicao": "CREATE UNIQUE INDEX avaliacao_produto_pkey ON public.avaliacao_produto USING btree (id_avaliacao)"
+      },
+      {
+        "nome": "idx_avaliacao_produto",
+        "definicao": "CREATE INDEX idx_avaliacao_produto ON public.avaliacao_produto USING btree (produto_id)"
+      }
+    ]
+  },
+  "categoria": {
+    "colunas": [
+      {
+        "nome": "cat_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('categoria_cat_id_seq'::regclass)"
+      },
+      {
+        "nome": "cat_nome",
+        "tipo": "character varying(100)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cat_pai",
+        "tipo": "integer(32,0)",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "cat_id"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "cat_pai",
+        "tabela_referenciada": "categoria",
+        "coluna_referenciada": "cat_id",
+        "constraint": "categoria_cat_pai_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "cat_id IS NOT NULL",
+      "cat_nome IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "categoria_pkey",
+        "definicao": "CREATE UNIQUE INDEX categoria_pkey ON public.categoria USING btree (cat_id)"
+      }
+    ]
+  },
+  "cupom_desconto": {
+    "colunas": [
+      {
+        "nome": "id_cupom",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('cupom_desconto_id_cupom_seq'::regclass)"
+      },
+      {
+        "nome": "codigo",
+        "tipo": "character varying(30)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "percentual",
+        "tipo": "numeric(5,2)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "valor_fixo",
+        "tipo": "numeric(10,2)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "dt_validade",
+        "tipo": "date",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "ativo",
+        "tipo": "boolean",
+        "nullable": true,
+        "default": "true"
+      }
+    ],
+    "chave_primaria": [
+      "id_cupom"
+    ],
+    "chaves_estrangeiras": [],
+    "unique_constraints": [
+      "codigo"
+    ],
+    "check_constraints": [
+      "id_cupom IS NOT NULL",
+      "codigo IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "cupom_desconto_pkey",
+        "definicao": "CREATE UNIQUE INDEX cupom_desconto_pkey ON public.cupom_desconto USING btree (id_cupom)"
+      },
+      {
+        "nome": "cupom_desconto_codigo_key",
+        "definicao": "CREATE UNIQUE INDEX cupom_desconto_codigo_key ON public.cupom_desconto USING btree (codigo)"
+      }
+    ]
+  },
+  "deposito": {
+    "colunas": [
+      {
+        "nome": "id_deposito",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('deposito_id_deposito_seq'::regclass)"
+      },
+      {
+        "nome": "nome",
+        "tipo": "character varying(100)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cidade",
+        "tipo": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "uf",
+        "tipo": "character(2)",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "id_deposito"
+    ],
+    "chaves_estrangeiras": [],
+    "unique_constraints": [],
+    "check_constraints": [
+      "id_deposito IS NOT NULL",
+      "nome IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "deposito_pkey",
+        "definicao": "CREATE UNIQUE INDEX deposito_pkey ON public.deposito USING btree (id_deposito)"
+      }
+    ]
+  },
+  "endereco_cliente": {
+    "colunas": [
+      {
+        "nome": "id_endereco",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('endereco_cliente_id_endereco_seq'::regclass)"
+      },
+      {
+        "nome": "cliente_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "logradouro",
+        "tipo": "character varying(200)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "numero",
+        "tipo": "character varying(10)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "complemento",
+        "tipo": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "bairro",
+        "tipo": "character varying(100)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "cidade",
+        "tipo": "character varying(100)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "uf",
+        "tipo": "character(2)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cep",
+        "tipo": "character varying(9)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "principal",
+        "tipo": "boolean",
+        "nullable": true,
+        "default": "false"
+      }
+    ],
+    "chave_primaria": [
+      "id_endereco"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "cliente_id",
+        "tabela_referenciada": "tb_cliente",
+        "coluna_referenciada": "id_cliente",
+        "constraint": "endereco_cliente_cliente_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "id_endereco IS NOT NULL",
+      "cliente_id IS NOT NULL",
+      "logradouro IS NOT NULL",
+      "cidade IS NOT NULL",
+      "uf IS NOT NULL",
+      "cep IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "endereco_cliente_pkey",
+        "definicao": "CREATE UNIQUE INDEX endereco_cliente_pkey ON public.endereco_cliente USING btree (id_endereco)"
+      }
+    ]
+  },
+  "estoque_produto": {
+    "colunas": [
+      {
+        "nome": "produto_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "deposito_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "qtd_disponivel",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "0"
+      },
+      {
+        "nome": "qtd_reservada",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "0"
+      }
+    ],
+    "chave_primaria": [
+      "produto_id",
+      "deposito_id"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "produto_id",
+        "tabela_referenciada": "produto",
+        "coluna_referenciada": "id_produto",
+        "constraint": "estoque_produto_produto_id_fkey"
+      },
+      {
+        "coluna": "deposito_id",
+        "tabela_referenciada": "deposito",
+        "coluna_referenciada": "id_deposito",
+        "constraint": "estoque_produto_deposito_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "produto_id IS NOT NULL",
+      "deposito_id IS NOT NULL",
+      "qtd_disponivel IS NOT NULL",
+      "qtd_reservada IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "estoque_produto_pkey",
+        "definicao": "CREATE UNIQUE INDEX estoque_produto_pkey ON public.estoque_produto USING btree (produto_id, deposito_id)"
+      }
+    ]
+  },
+  "forma_pagamento": {
+    "colunas": [
+      {
+        "nome": "id_forma",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('forma_pagamento_id_forma_seq'::regclass)"
+      },
+      {
+        "nome": "descricao",
+        "tipo": "character varying(50)",
+        "nullable": false,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "id_forma"
+    ],
+    "chaves_estrangeiras": [],
+    "unique_constraints": [],
+    "check_constraints": [
+      "id_forma IS NOT NULL",
+      "descricao IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "forma_pagamento_pkey",
+        "definicao": "CREATE UNIQUE INDEX forma_pagamento_pkey ON public.forma_pagamento USING btree (id_forma)"
+      }
+    ]
+  },
+  "fornecedor": {
+    "colunas": [
+      {
+        "nome": "id_fornecedor",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('fornecedor_id_fornecedor_seq'::regclass)"
+      },
+      {
+        "nome": "razao_social",
+        "tipo": "character varying(200)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cnpj",
+        "tipo": "character varying(18)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "email_contato",
+        "tipo": "character varying(150)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "telefone",
+        "tipo": "character varying(20)",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "id_fornecedor"
+    ],
+    "chaves_estrangeiras": [],
+    "unique_constraints": [
+      "cnpj"
+    ],
+    "check_constraints": [
+      "id_fornecedor IS NOT NULL",
+      "razao_social IS NOT NULL",
+      "cnpj IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "fornecedor_pkey",
+        "definicao": "CREATE UNIQUE INDEX fornecedor_pkey ON public.fornecedor USING btree (id_fornecedor)"
+      },
+      {
+        "nome": "fornecedor_cnpj_key",
+        "definicao": "CREATE UNIQUE INDEX fornecedor_cnpj_key ON public.fornecedor USING btree (cnpj)"
+      }
+    ]
+  },
+  "item_pedido": {
+    "colunas": [
+      {
+        "nome": "id_item",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('item_pedido_id_item_seq'::regclass)"
+      },
+      {
+        "nome": "pedido_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "produto_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "quantidade",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "preco_unitario",
+        "tipo": "numeric(10,2)",
+        "nullable": false,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "id_item"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "pedido_id",
+        "tabela_referenciada": "pedido",
+        "coluna_referenciada": "id_pedido",
+        "constraint": "item_pedido_pedido_id_fkey"
+      },
+      {
+        "coluna": "produto_id",
+        "tabela_referenciada": "produto",
+        "coluna_referenciada": "id_produto",
+        "constraint": "item_pedido_produto_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "((quantidade > 0))",
+      "id_item IS NOT NULL",
+      "pedido_id IS NOT NULL",
+      "produto_id IS NOT NULL",
+      "quantidade IS NOT NULL",
+      "preco_unitario IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "item_pedido_pkey",
+        "definicao": "CREATE UNIQUE INDEX item_pedido_pkey ON public.item_pedido USING btree (id_item)"
+      },
+      {
+        "nome": "idx_item_pedido_pedido",
+        "definicao": "CREATE INDEX idx_item_pedido_pedido ON public.item_pedido USING btree (pedido_id)"
+      }
+    ]
+  },
+  "pagamento": {
+    "colunas": [
+      {
+        "nome": "id_pagamento",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('pagamento_id_pagamento_seq'::regclass)"
+      },
+      {
+        "nome": "pedido_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "forma_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "valor",
+        "tipo": "numeric(10,2)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "dt_pagamento",
+        "tipo": "timestamp without time zone",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "aprovado",
+        "tipo": "boolean",
+        "nullable": true,
+        "default": "false"
+      },
+      {
+        "nome": "parcelas",
+        "tipo": "integer(32,0)",
+        "nullable": true,
+        "default": "1"
+      }
+    ],
+    "chave_primaria": [
+      "id_pagamento"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "pedido_id",
+        "tabela_referenciada": "pedido",
+        "coluna_referenciada": "id_pedido",
+        "constraint": "pagamento_pedido_id_fkey"
+      },
+      {
+        "coluna": "forma_id",
+        "tabela_referenciada": "forma_pagamento",
+        "coluna_referenciada": "id_forma",
+        "constraint": "pagamento_forma_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "id_pagamento IS NOT NULL",
+      "pedido_id IS NOT NULL",
+      "forma_id IS NOT NULL",
+      "valor IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "pagamento_pkey",
+        "definicao": "CREATE UNIQUE INDEX pagamento_pkey ON public.pagamento USING btree (id_pagamento)"
+      }
+    ]
+  },
+  "pedido": {
+    "colunas": [
+      {
+        "nome": "id_pedido",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('pedido_id_pedido_seq'::regclass)"
+      },
+      {
+        "nome": "cliente_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "endereco_entrega_id",
+        "tipo": "integer(32,0)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "status_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "dt_pedido",
+        "tipo": "timestamp without time zone",
+        "nullable": true,
+        "default": "now()"
+      },
+      {
+        "nome": "valor_frete",
+        "tipo": "numeric(10,2)",
+        "nullable": true,
+        "default": "0"
+      },
+      {
+        "nome": "valor_desconto",
+        "tipo": "numeric(10,2)",
+        "nullable": true,
+        "default": "0"
+      },
+      {
+        "nome": "obs",
+        "tipo": "text",
+        "nullable": true,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "id_pedido"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "cliente_id",
+        "tabela_referenciada": "tb_cliente",
+        "coluna_referenciada": "id_cliente",
+        "constraint": "pedido_cliente_id_fkey"
+      },
+      {
+        "coluna": "endereco_entrega_id",
+        "tabela_referenciada": "endereco_cliente",
+        "coluna_referenciada": "id_endereco",
+        "constraint": "pedido_endereco_entrega_id_fkey"
+      },
+      {
+        "coluna": "status_id",
+        "tabela_referenciada": "status_pedido",
+        "coluna_referenciada": "id_status",
+        "constraint": "pedido_status_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "id_pedido IS NOT NULL",
+      "cliente_id IS NOT NULL",
+      "status_id IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "pedido_pkey",
+        "definicao": "CREATE UNIQUE INDEX pedido_pkey ON public.pedido USING btree (id_pedido)"
+      },
+      {
+        "nome": "idx_pedido_cliente",
+        "definicao": "CREATE INDEX idx_pedido_cliente ON public.pedido USING btree (cliente_id)"
+      },
+      {
+        "nome": "idx_pedido_dt",
+        "definicao": "CREATE INDEX idx_pedido_dt ON public.pedido USING btree (dt_pedido)"
+      }
+    ]
+  },
+  "pedido_cupom": {
+    "colunas": [
+      {
+        "nome": "pedido_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cupom_id",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "pedido_id",
+      "cupom_id"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "pedido_id",
+        "tabela_referenciada": "pedido",
+        "coluna_referenciada": "id_pedido",
+        "constraint": "pedido_cupom_pedido_id_fkey"
+      },
+      {
+        "coluna": "cupom_id",
+        "tabela_referenciada": "cupom_desconto",
+        "coluna_referenciada": "id_cupom",
+        "constraint": "pedido_cupom_cupom_id_fkey"
+      }
+    ],
+    "unique_constraints": [],
+    "check_constraints": [
+      "pedido_id IS NOT NULL",
+      "cupom_id IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "pedido_cupom_pkey",
+        "definicao": "CREATE UNIQUE INDEX pedido_cupom_pkey ON public.pedido_cupom USING btree (pedido_id, cupom_id)"
+      }
+    ]
+  },
+  "produto": {
+    "colunas": [
+      {
+        "nome": "id_produto",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('produto_id_produto_seq'::regclass)"
+      },
+      {
+        "nome": "sku",
+        "tipo": "character varying(50)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "nome_produto",
+        "tipo": "character varying(200)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "descricao",
+        "tipo": "text",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "categoria_id",
+        "tipo": "integer(32,0)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "fornecedor_id",
+        "tipo": "integer(32,0)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "preco_custo",
+        "tipo": "numeric(10,2)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "preco_venda",
+        "tipo": "numeric(10,2)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "ativo",
+        "tipo": "boolean",
+        "nullable": true,
+        "default": "true"
+      },
+      {
+        "nome": "dt_cadastro",
+        "tipo": "timestamp without time zone",
+        "nullable": true,
+        "default": "now()"
+      }
+    ],
+    "chave_primaria": [
+      "id_produto"
+    ],
+    "chaves_estrangeiras": [
+      {
+        "coluna": "categoria_id",
+        "tabela_referenciada": "categoria",
+        "coluna_referenciada": "cat_id",
+        "constraint": "produto_categoria_id_fkey"
+      },
+      {
+        "coluna": "fornecedor_id",
+        "tabela_referenciada": "fornecedor",
+        "coluna_referenciada": "id_fornecedor",
+        "constraint": "produto_fornecedor_id_fkey"
+      }
+    ],
+    "unique_constraints": [
+      "sku"
+    ],
+    "check_constraints": [
+      "id_produto IS NOT NULL",
+      "sku IS NOT NULL",
+      "nome_produto IS NOT NULL",
+      "preco_custo IS NOT NULL",
+      "preco_venda IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "produto_pkey",
+        "definicao": "CREATE UNIQUE INDEX produto_pkey ON public.produto USING btree (id_produto)"
+      },
+      {
+        "nome": "produto_sku_key",
+        "definicao": "CREATE UNIQUE INDEX produto_sku_key ON public.produto USING btree (sku)"
+      },
+      {
+        "nome": "idx_produto_categoria",
+        "definicao": "CREATE INDEX idx_produto_categoria ON public.produto USING btree (categoria_id)"
+      }
+    ]
+  },
+  "status_pedido": {
+    "colunas": [
+      {
+        "nome": "id_status",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('status_pedido_id_status_seq'::regclass)"
+      },
+      {
+        "nome": "descricao",
+        "tipo": "character varying(50)",
+        "nullable": false,
+        "default": null
+      }
+    ],
+    "chave_primaria": [
+      "id_status"
+    ],
+    "chaves_estrangeiras": [],
+    "unique_constraints": [],
+    "check_constraints": [
+      "id_status IS NOT NULL",
+      "descricao IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "status_pedido_pkey",
+        "definicao": "CREATE UNIQUE INDEX status_pedido_pkey ON public.status_pedido USING btree (id_status)"
+      }
+    ]
+  },
+  "tb_cliente": {
+    "colunas": [
+      {
+        "nome": "id_cliente",
+        "tipo": "integer(32,0)",
+        "nullable": false,
+        "default": "nextval('tb_cliente_id_cliente_seq'::regclass)"
+      },
+      {
+        "nome": "nome",
+        "tipo": "character varying(150)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "email",
+        "tipo": "character varying(150)",
+        "nullable": false,
+        "default": null
+      },
+      {
+        "nome": "cpf",
+        "tipo": "character varying(14)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "telefone",
+        "tipo": "character varying(20)",
+        "nullable": true,
+        "default": null
+      },
+      {
+        "nome": "dt_cadastro",
+        "tipo": "timestamp without time zone",
+        "nullable": true,
+        "default": "now()"
+      },
+      {
+        "nome": "status",
+        "tipo": "character(1)",
+        "nullable": true,
+        "default": "'A'::bpchar"
+      }
+    ],
+    "chave_primaria": [
+      "id_cliente"
+    ],
+    "chaves_estrangeiras": [],
+    "unique_constraints": [
+      "email",
+      "cpf"
+    ],
+    "check_constraints": [
+      "id_cliente IS NOT NULL",
+      "nome IS NOT NULL",
+      "email IS NOT NULL"
+    ],
+    "indices": [
+      {
+        "nome": "tb_cliente_pkey",
+        "definicao": "CREATE UNIQUE INDEX tb_cliente_pkey ON public.tb_cliente USING btree (id_cliente)"
+      },
+      {
+        "nome": "tb_cliente_email_key",
+        "definicao": "CREATE UNIQUE INDEX tb_cliente_email_key ON public.tb_cliente USING btree (email)"
+      },
+      {
+        "nome": "tb_cliente_cpf_key",
+        "definicao": "CREATE UNIQUE INDEX tb_cliente_cpf_key ON public.tb_cliente USING btree (cpf)"
+      }
+    ]
+  }
+}
